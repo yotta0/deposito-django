@@ -1,13 +1,15 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 
 from .models import Products
 
 
 def index(request):
     latest_products_list = Products.objects.order_by('-created_at')[:5]
-    print(f'latest_products_list: {latest_products_list}')
-    output = ", ".join([q.name for q in latest_products_list])
-    return HttpResponse(output)
+    context = {
+        'latest_products_list': latest_products_list,
+    }
+    return render(request, 'inventario/index.html', context)
 
 
 def detail(request, product_id):
